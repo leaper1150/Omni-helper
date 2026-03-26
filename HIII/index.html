@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omni-Helper | AI Agent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        .markdown-body h1 {
+            @apply text-2xl font-black mb-4 text-slate-800;
+        }
+
+        .markdown-body h2 {
+            @apply text-lg font-bold mt-6 mb-2 text-blue-700 uppercase tracking-tight;
+        }
+
+        .markdown-body table {
+            @apply w-full border-collapse mb-4 text-sm bg-white;
+        }
+
+        .markdown-body th {
+            @apply bg-slate-100 border p-2 text-left font-bold;
+        }
+
+        .markdown-body td {
+            @apply border p-2;
+        }
+
+        .markdown-body ul {
+            @apply list-disc ml-6 mb-4;
+        }
+
+        .markdown-body code:not(.language-mermaid) {
+            @apply bg-slate-800 text-pink-400 px-2 py-1 rounded font-mono text-xs;
+        }
+
+        .markdown-body pre {
+            @apply bg-slate-800 p-4 rounded-xl overflow-x-auto mb-4 text-white font-mono text-sm;
+        }
+
+        .active-tab {
+            @apply bg-blue-600 text-white shadow-lg scale-105;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 min-h-screen font-sans antialiased text-slate-900">
+
+    <nav class="bg-white/80 backdrop-blur-md border-b border-slate-200 p-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div
+                    class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-black uppercase">
+                    O</div>
+                <h1 class="text-xl font-black tracking-tighter uppercase">Omni<span class="text-blue-600">Helper</span>
+                </h1>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="https://discord.com/oauth2/authorize?client_id=1486775217459298425&permissions=274877959168&integration_type=0&scope=bot"
+                    target="_blank"
+                    class="flex items-center gap-1 bg-[#5865F2] hover:bg-[#4752C4] text-white text-[10px] font-bold px-3 py-1.5 rounded-full transition-all shadow-sm border border-[#4752C4]">
+                    <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24">
+                        <path
+                            d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3333-.9555 2.419-2.1569 2.419zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3333-.946 2.419-2.1568 2.419z" />
+                    </svg>
+                    Add to Server
+                </a>
+                <button onclick="document.getElementById('privacyModal').classList.remove('hidden')"
+                    class="text-[10px] font-bold bg-green-100 text-green-600 px-2 py-1 rounded-full uppercase shadow-sm border border-green-200 hover:bg-green-200 transition-all cursor-pointer relative z-40">🛡️
+                    Privacy Shield</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto p-6">
+        <div class="flex flex-wrap justify-center gap-3 mb-8">
+            <button onclick="setMode('general')" id="tab-general"
+                class="mode-tab active-tab px-6 py-3 rounded-2xl font-bold transition-all">📝 Notes Helper</button>
+            <button onclick="setMode('legal')" id="tab-legal"
+                class="mode-tab bg-white px-6 py-3 rounded-2xl font-bold transition-all border border-slate-200 hover:border-blue-300">⚖️
+                T&C Explainer</button>
+            <button onclick="setMode('code')" id="tab-code"
+                class="mode-tab bg-white px-6 py-3 rounded-2xl font-bold transition-all border border-slate-200 hover:border-blue-300">🛠️
+                CodeLab</button>
+            <button onclick="setMode('idea')" id="tab-idea"
+                class="mode-tab bg-white px-6 py-3 rounded-2xl font-bold transition-all border border-slate-200 hover:border-blue-300">💡
+                General AI</button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="modeTitle" class="text-xs font-black text-slate-400 uppercase tracking-widest">General
+                        Assistant</h3>
+                    <button onclick="clearAll()"
+                        class="text-[10px] font-bold text-red-500 hover:text-red-700 uppercase tracking-widest">Reset</button>
+                </div>
+
+                <textarea id="noteText" placeholder="Type instructions or notes..."
+                    class="w-full h-40 p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none resize-none transition-all focus:ring-4 focus:ring-blue-100"></textarea>
+
+                <div
+                    class="mt-4 border-2 border-dashed border-slate-200 rounded-2xl p-4 text-center hover:bg-slate-50 transition-all relative group cursor-pointer">
+                    <input type="file" id="fileInput" accept="image/*"
+                        class="absolute inset-0 opacity-0 cursor-pointer z-10">
+                    <div id="uploadUI" class="py-4">
+                        <span class="text-2xl mb-2 block">📸</span>
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-tighter">Attach photo for visual
+                            context</p>
+                    </div>
+                    <img id="preview"
+                        class="hidden h-32 mx-auto rounded-xl shadow-md border-2 border-white relative z-20">
+                </div>
+
+                <button onclick="runOmni()"
+                    class="w-full mt-auto pt-6 bg-slate-900 text-white font-black py-4 rounded-2xl hover:bg-blue-600 active:scale-95 transition-all shadow-xl">
+                    EXECUTE AGENT
+                </button>
+            </div>
+
+            <div
+                class="relative bg-white rounded-3xl p-8 shadow-sm border border-slate-200 min-h-[600px] flex flex-col">
+                <div id="loader"
+                    class="hidden absolute inset-0 bg-white/90 backdrop-blur-sm z-30 flex flex-col items-center justify-center rounded-3xl">
+                    <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin">
+                    </div>
+                    <p class="mt-4 font-black text-blue-600 animate-pulse text-[10px] uppercase tracking-widest">
+                        Synthesizing...</p>
+                </div>
+
+                <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                    <span class="text-xs font-black uppercase text-slate-400 tracking-widest">Output</span>
+                    <div class="flex gap-2">
+                        <button onclick="copyOutput()"
+                            class="text-[10px] font-bold bg-slate-100 text-slate-600 px-3 py-2 hover:bg-slate-200 rounded-lg transition-all">Copy</button>
+                    </div>
+                </div>
+
+                <div id="outputArea" class="markdown-body flex-grow overflow-y-auto pr-2">
+                    <div class="flex flex-col items-center justify-center h-full text-slate-300">
+                        <span class="text-4xl mb-4">✨</span>
+                        <p class="italic font-medium">Ready for your command.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // UPDATE THIS when you deploy to Render!
+        const BACKEND_URL = "http://localhost:8000";
+
+        let currentMode = 'general';
+        let base64Image = null;
+
+        mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+
+        const MODES = {
+            general: { title: "Notes Helper", placeholder: "Paste your notes here for summarization or organization..." },
+            legal: { title: "T&C Explainer", placeholder: "Paste Terms & Conditions or a contract..." },
+            code: { title: "CodeSmith", placeholder: "Describe an algorithm or upload a photo of a flowchart..." },
+            idea: { title: "General AI", placeholder: "Ask a general question..." }
+        };
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-tab').forEach(t => t.className = "mode-tab bg-white px-6 py-3 rounded-2xl font-bold transition-all border border-slate-200 hover:border-blue-300");
+            document.getElementById(`tab-${mode}`).className = "mode-tab active-tab px-6 py-3 rounded-2xl font-bold transition-all";
+            document.getElementById('modeTitle').innerText = MODES[mode].title;
+            document.getElementById('noteText').placeholder = MODES[mode].placeholder;
+        }
+
+        // Image Handling
+        document.getElementById('fileInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    document.getElementById('preview').src = ev.target.result;
+                    document.getElementById('preview').classList.remove('hidden');
+                    document.getElementById('uploadUI').classList.add('hidden');
+                    base64Image = ev.target.result.split(',')[1];
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function clearAll() {
+            document.getElementById('noteText').value = '';
+            base64Image = null;
+            document.getElementById('preview').src = '';
+            document.getElementById('preview').classList.add('hidden');
+            document.getElementById('uploadUI').classList.remove('hidden');
+            document.getElementById('outputArea').innerHTML = '<div class="flex flex-col items-center justify-center h-full text-slate-300"><span class="text-4xl mb-4">✨</span><p class="italic font-medium">Ready for your command.</p></div>';
+            document.getElementById('outputArea').removeAttribute('data-raw');
+        }
+
+        async function runOmni() {
+            const text = document.getElementById('noteText').value;
+            const output = document.getElementById('outputArea');
+            const loader = document.getElementById('loader');
+
+            if (!text && !base64Image) return alert("Please enter text or upload an image.");
+            loader.classList.remove('hidden');
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/agent/execute`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text: text,
+                        mode: currentMode,
+                        image_base64: base64Image
+                    })
+                });
+
+                if (response.status === 429) throw new Error("Slow down! Anti-griefing limit reached.");
+                if (response.status === 403) throw new Error("BANNED: Your IP is blacklisted.");
+
+                const data = await response.json();
+                if (!response.ok) {
+                    let errMsg = data.detail || "Server Error";
+                    if (typeof errMsg === 'object') errMsg = JSON.stringify(errMsg);
+                    throw new Error(errMsg);
+                }
+
+                // 🛡️ THE NUCLEAR FIX: Force the data into a pure string
+                let safeText = data.output;
+                if (Array.isArray(safeText)) {
+                    // If it's an Array, extract the text blocks and join them
+                    safeText = safeText.map(item => item.text ? item.text : JSON.stringify(item)).join('\n');
+                } else if (typeof safeText !== 'string') {
+                    // If it's some other weird object, force it to string via JSON
+                    safeText = JSON.stringify(safeText);
+                }
+
+                // Parse Markdown using our guaranteed string
+                let rawHtml = marked.parse(safeText);
+
+                // Convert Marked's code blocks into Mermaid divs
+                const htmlWithMermaid = rawHtml.replace(/<pre><code class="language-mermaid">([\s\S]*?)<\/code><\/pre>/g, '<div class="mermaid">$1</div>');
+
+                output.innerHTML = htmlWithMermaid;
+                output.dataset.raw = safeText; // Save the safe string for Discord/Copy
+
+                // Render diagrams if they exist
+                if (htmlWithMermaid.includes('class="mermaid"')) {
+                    mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+                }
+
+            } catch (err) {
+                output.innerHTML = `<div class="p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 font-bold mt-4">${err.message}</div>`;
+            } finally {
+                loader.classList.add('hidden');
+            }
+        }
+
+        async function syncToDiscord() {
+            const content = document.getElementById('outputArea').dataset.raw;
+            if (!content) return alert("Nothing to sync yet!");
+            try {
+                const btn = event.target;
+                btn.innerText = "Sending...";
+                await fetch(`${BACKEND_URL}/agent/discord`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: content })
+                });
+                btn.innerText = "✅ Sent!";
+                setTimeout(() => btn.innerText = "📤 Push to Discord", 2000);
+            } catch (err) { alert("Discord sync failed."); }
+        }
+
+        function copyOutput() {
+            const raw = document.getElementById('outputArea').dataset.raw;
+            if (raw) {
+                navigator.clipboard.writeText(raw);
+                const btn = event.target;
+                btn.innerText = "Copied!";
+                setTimeout(() => btn.innerText = "Copy", 2000);
+            }
+        }
+    </script>
+
+    <!-- Privacy Modal -->
+    <div id="privacyModal"
+        class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div
+            class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-slate-200 transform transition-all relative">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-black text-slate-800 flex items-center gap-2"><span class="text-2xl">🛡️</span>
+                    Privacy Shield</h2>
+                <button onclick="document.getElementById('privacyModal').classList.add('hidden')"
+                    class="text-slate-400 hover:text-slate-700 font-bold text-xl">&times;</button>
+            </div>
+            <div class="space-y-4 text-sm text-slate-600">
+                <p>We employ active local scrubbing algorithms to protect your sensitive information before it reaches
+                    the AI.</p>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                    <h3 class="font-bold text-slate-800 mb-2">How it works:</h3>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>PII Redaction:</strong> Emails and phone numbers are automatically censored locally.
+                        </li>
+                        <li><strong>Zero Log Policy:</strong> Your prompts are processed transiently and never
+                            persistently logged.</li>
+                        <li><strong>Network Protection:</strong> Advanced rate limiting safeguards against malicious
+                            traffic.</li>
+                    </ul>
+                </div>
+            </div>
+            <button onclick="document.getElementById('privacyModal').classList.add('hidden')"
+                class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all">I
+                Understand</button>
+        </div>
+    </div>
+</body>
+
+</html>
